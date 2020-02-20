@@ -5,7 +5,7 @@
 ##### 자동 채색 프로그램
 ----------
 ----------
-## Step 1
+## Step 1 (Step1.py)
 ### 1. 이미지 전처리
 #### - 끊긴 부분이 있을 수도 있으니 팽창, 그 후 에지검출
 ##### ![apple1](https://user-images.githubusercontent.com/48282708/74900788-2e244800-53e4-11ea-8063-cbb9bb2f296a.png)
