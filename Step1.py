@@ -40,14 +40,14 @@ for i in range(len(result)):
             and_result[i][j] = 0
 
 cv2.imshow('and',and_result)
-cv2.waitKey(0)
 
-# 채색
+# 색 채우기
 x, y = int(len(result)/2) , int(len(result[0])/2)
 color = and_result[:]
 q = [[x,y]]
 offset = [[1,0],[0,1],[-1,0],[0,-1]]
 
+transform = []
 while q:
     cur = q.pop(0)
     x,y = cur[0], cur[1]
@@ -59,7 +59,16 @@ while q:
         pass
     else:
         color[x][y] = 255
+        transform.append([x,y]) # 색 채운곳을 저장
         for i in range(4):
             q.append([x+offset[i][0],y+offset[i][1]])
 cv2.imshow('Q',color)
+cv2.waitKey(0)
+
+# RGB
+img = cv2.imread('sy_ap1.png')
+
+for t in transform:
+    img[t[0]][t[1]] = np.array([0,0,255])
+cv2.imshow('Apple',img)
 cv2.waitKey(0)
