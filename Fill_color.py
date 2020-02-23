@@ -5,12 +5,11 @@ class Fill_color(object):
     def start(self):
         while True:
             file = input('$ File Name: ')
-            start_img = self.preprocessing(file)
             origin = cv2.imread(file,0)
             origin_color = cv2.imread(file)
 
             if origin is None or origin_color is None:
-                print('-- Not found file --')
+                print('Not found '+file)
             else:
                 bin_img = self.binarize(origin, 220)
                 open_img = self.image_open(bin_img)
@@ -20,30 +19,6 @@ class Fill_color(object):
                 color_img = self.fill_color(origin_color,transform,[0,0,255])
                 cv2.imshow('Result',color_img)
                 cv2.waitKey(0)
-
-    # def preprocessing(self, file):
-    #     origin = cv2.imread(file, 0)
-    #     img = self.binarize(origin, 220)
-    #     result = cv2.imread(file)
-    # 
-    #     index = 0
-    #     for i in range(len(img)-10,-1,-1):
-    #         if min(img[i]) != 255:
-    #             index = i
-    #             break
-    #     result = result[:index+1]
-    #     img = img[:index+1]
-    # 
-    #     index = 0
-    #     for i in range(1,len(img)):
-    #         if min(img[i]) != 255:
-    #             index = i
-    #             break
-    #     result = result[index:]
-    #     img = img[:index+1]
-    # 
-    #     cv2.imshow('1',img)
-    #     cv2.waitKey(0)
 
     def binarize(self, img, threshold):
         # 이진화
