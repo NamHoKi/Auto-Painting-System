@@ -22,5 +22,5 @@
 #### + 내부 채운 부분을 RGB로 변환
 ##### ![1](https://user-images.githubusercontent.com/48282708/74938640-bf6ddb80-5431-11ea-89d9-4d8d2384621d.png)
 ----------
-### __Segmentation__
-##### -
+### 3. Segmentation
+#### 영역 구분
