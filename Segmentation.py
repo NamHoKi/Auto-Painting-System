@@ -50,7 +50,8 @@ class Segmentation(object):
 
     def segmentation_image_show(self,origin_img, segmentation_img, count):
         color_img = copy.deepcopy(origin_img)
-        print(count)
+        
+        # 영역 개수
         if count <= 5:
             color = [0,0,255]
         else:
