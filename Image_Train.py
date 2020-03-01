@@ -3,3 +3,5 @@
 import tensorflow as tf
 import numpy as np
 
+class Train():
+      pass
