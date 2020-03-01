@@ -22,6 +22,7 @@ class Segmentation(object):
         return bin_img
 
     def segmentation(self, img):
+        # 모든 픽셀을 돌아보고 그루핑
         segmentation_img = copy.deepcopy(img)
         offset = [[1, 0], [0, 1], [-1, 0], [0, -1]]
         count = 0
