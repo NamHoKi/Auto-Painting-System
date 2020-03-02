@@ -1,3 +1,5 @@
+# -*- cording : utf-8 -*-
+
 import cv2
 
 class Cut_blank(object):
