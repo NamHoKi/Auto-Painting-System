@@ -1,3 +1,6 @@
+# -*- cording : utf-8 -*-
+# 색을 단색이 아니도록 추가해야함
+
 import cv2
 import numpy as np
 
