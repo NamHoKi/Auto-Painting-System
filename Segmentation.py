@@ -1,3 +1,6 @@
+# -*- cording : utf-8 -*-
+# Cut_blank 후, 배경이 각각 따로 세그먼트가 되는데 수정 필요
+
 import cv2
 import copy
 
