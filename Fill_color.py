@@ -96,5 +96,15 @@ class Fill_color(object):
 #         dst = cv2.GaussianBlur(img, (5, 5), 0)
 #         return dst
 
+#     def fill_color(self, img, transform, color):
+#         r, g ,b = color[2], color[1], color[0]
+
+#         for t in transform:
+#             temp_color = [b + random.randrange(10,100),g + random.randrange(10,100), r]
+#             img[t[0]][t[1]] = np.array(temp_color)
+
+#         dst = cv2.GaussianBlur(img, (5, 5), 0)
+#         return dst
+
 main = Fill_color()
 main.start()
