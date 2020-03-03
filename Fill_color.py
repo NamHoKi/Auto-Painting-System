@@ -73,10 +73,28 @@ class Fill_color(object):
                     q.append([x + offset[i][0], y + offset[i][1]])
         return [color, transform]
 
-    def fill_color(self, img, transform, color):
-        for t in transform:
-            img[t[0]][t[1]] = np.array(color)
-        return img
+    # 픽셀값 변경하면서 해보는중
+#     def fill_color(self, img, transform, color):
+#         for t in transform:
+#             img[t[0]][t[1]] = np.array(color)
+#         return img
+    
+#         def fill_color(self, img, transform, color):
+#         count = 0
+#         temp_color = copy.deepcopy(color)
+        
+#         for t in transform:
+#             img[t[0]][t[1]] = np.array(temp_color)
+            
+#             if count >= 100:
+#                 temp_color = copy.deepcopy(color)
+#                 count = count % 100
+#             else:
+#                 temp_color[0] += 3
+#                 temp_color[1] += 3
+#                 count += 3
+#         dst = cv2.GaussianBlur(img, (5, 5), 0)
+#         return dst
 
 main = Fill_color()
 main.start()
