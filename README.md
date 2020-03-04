@@ -31,3 +31,5 @@
 #### + 영역 개수 > 5
 ![g](https://user-images.githubusercontent.com/48282708/75381890-eb4efc80-591c-11ea-8bf7-3708da3a0706.png)
 ----------
+### Memo
+##### 데이터 모으기, 3/9까지 사과, 체리 스케치 50개 300 * 300
