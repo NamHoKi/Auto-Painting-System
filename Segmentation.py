@@ -1,5 +1,6 @@
 # -*- cording : utf-8 -*-
 # Cut_blank 후, 배경이 각각 따로 세그먼트가 되는데 수정 필요
+# 배경을 흰색으로 단정지을지 고민
 
 import cv2
 import copy
