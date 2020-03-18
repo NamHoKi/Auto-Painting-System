@@ -8,6 +8,13 @@
 ##### 이미지 인식
 ##### 이미지 자동 채색
 ----------
+## Check
+### Image_train.py
+#### 1. Project 안에 numpy_data 폴더 생성
+#### 2. numpy 버전 1.16.1로 수정
+##### pip uninstall numpy
+##### pip install --upgrade numpy==1.16.1
+----------
 ## __Step__
 #### 1. 이미지 전처리 - 여백 자르기
 #### 2. 이미지 색 채우기 - 객체내부 색 채우기
