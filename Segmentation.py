@@ -7,19 +7,18 @@ import cv2
 import copy
 
 class Segmentation(object):
-    def start(self):
-        pass
-
-    def test(self):
-        file_name = input('$ File name : ')
+    def start(self, file_name):
         img = cv2.imread(file_name,0)
-        img = self.binarize(img,220)
-        sg = self.segmentation(img)
-        origin = cv2.imread(file_name)
-        test = self.segmentation_image_show(origin,sg[0],sg[1])
-        cv2.imshow('Origign',origin)
-        cv2.imshow('Color',test)
-        cv2.waitKey(0)
+        if img is None:
+            print('Not found',file_name)
+        else:
+            img = self.binarize(img,220)
+            sg = self.segmentation(img)
+            origin = cv2.imread(file_name)
+            test = self.segmentation_image_show(origin,sg[0],sg[1])
+            cv2.imshow('Origign',origin)
+            cv2.imshow('Color',test)
+            cv2.waitKey(0)
 
     def binarize(self, img, threshold):
         # 이진화
@@ -72,24 +71,22 @@ class Segmentation(object):
 
 
     ## 영역 넓이로 찾기 (제일 큰 값)
-#     def segmentation_image_show(self,origin_img, segmentation_img, count):
-#         color_img = copy.deepcopy(origin_img)
-#         print(count)
-#         red_count = self.return_size(copy.deepcopy(segmentation_img),count)
+    def segmentation_image_show(self,origin_img, segmentation_img, count):
+        color_img = copy.deepcopy(origin_img)
+        print(count)
+        red_count = self.return_size(copy.deepcopy(segmentation_img),count)
 
-#         for i in range(len(segmentation_img)):
-#             for j in range(len(segmentation_img[0])):
-#                 if segmentation_img[i][j] != 0 and segmentation_img[i][j] != 255 and segmentation_img[i][j] == red_count:
-#                     color_img[i][j] = [0,0,255]
-#         return color_img
+        for i in range(len(segmentation_img)):
+            for j in range(len(segmentation_img[0])):
+                if segmentation_img[i][j] != 0 and segmentation_img[i][j] != 255 and segmentation_img[i][j] == red_count:
+                    color_img[i][j] = [0,0,255]
+        return color_img
 
-#     def return_size(self,img, count):
-#         count_list = [0] * 255
-#         for i in range(len(img)):
-#             for j in range(len(img[0])):
-#                 if img[i][j] != 255 and img[i][j] != 0 and img[i][j] != 1:
-#                     count_list[img[i][j]] += 1
-#         return count_list.index(max(count_list))
+    def return_size(self,img, count):
+        count_list = [0] * (count + 5)
+        for i in range(len(img)):
+            for j in range(len(img[0])):
+                if img[i][j] != 255 and img[i][j] != 0 and img[i][j] != 1:
+                    count_list[img[i][j]] += 1
+        return count_list.index(max(count_list))
 
-sg = Segmentation()
-sg.test()
