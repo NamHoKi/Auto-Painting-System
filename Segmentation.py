@@ -54,20 +54,42 @@ class Segmentation(object):
                                 q.append([x + offset[i][0], y + offset[i][1]])
         return [segmentation_img, count]
 
-    def segmentation_image_show(self,origin_img, segmentation_img, count):
-        color_img = copy.deepcopy(origin_img)
+    ## 영역 개수로 판단하기
+#     def segmentation_image_show(self,origin_img, segmentation_img, count):
+#         color_img = copy.deepcopy(origin_img)
         
-        # 영역 개수
-        if count <= 5:
-            color = [0,0,255]
-        else:
-            color = [200,0,0]
+#         # 영역 개수
+#         if count <= 5:
+#             color = [0,0,255]
+#         else:
+#             color = [200,0,0]
 
-        for i in range(len(segmentation_img)):
-            for j in range(len(segmentation_img[0])):
-                if segmentation_img[i][j] != 0 and segmentation_img[i][j] != 255 and segmentation_img[i][j] != 1:
-                    color_img[i][j] = color
-        return color_img
+#         for i in range(len(segmentation_img)):
+#             for j in range(len(segmentation_img[0])):
+#                 if segmentation_img[i][j] != 0 and segmentation_img[i][j] != 255 and segmentation_img[i][j] != 1:
+#                     color_img[i][j] = color
+#         return color_img
+
+
+    ## 영역 넓이로 찾기 (제일 큰 값)
+#     def segmentation_image_show(self,origin_img, segmentation_img, count):
+#         color_img = copy.deepcopy(origin_img)
+#         print(count)
+#         red_count = self.return_size(copy.deepcopy(segmentation_img),count)
+
+#         for i in range(len(segmentation_img)):
+#             for j in range(len(segmentation_img[0])):
+#                 if segmentation_img[i][j] != 0 and segmentation_img[i][j] != 255 and segmentation_img[i][j] == red_count:
+#                     color_img[i][j] = [0,0,255]
+#         return color_img
+
+#     def return_size(self,img, count):
+#         count_list = [0] * 255
+#         for i in range(len(img)):
+#             for j in range(len(img[0])):
+#                 if img[i][j] != 255 and img[i][j] != 0 and img[i][j] != 1:
+#                     count_list[img[i][j]] += 1
+#         return count_list.index(max(count_list))
 
 sg = Segmentation()
 sg.test()
