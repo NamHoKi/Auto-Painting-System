@@ -3,7 +3,6 @@ import os, glob, numpy as np
 from sklearn.model_selection import train_test_split
 
 
-
 caltech_dir = "./multi_img_data/imgs_others/train"
 
 categories = ["sketch_apple", "sketch_cherry"]
@@ -46,7 +45,7 @@ y = np.array(y)
 
 X_train, X_test, y_train, y_test = train_test_split(X, y)
 xy = (X_train, X_test, y_train, y_test)
-np.save("./numpy_data/multi_image_data.npy", xy)
+np.save("./numpy_data/multi_image_data.npy", xy) # 프로젝트안에 numpy_data 디렉토리 
 
 print("ok", len(y))
 
