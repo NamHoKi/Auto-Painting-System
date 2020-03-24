@@ -1,4 +1,5 @@
 # -*- cording : utf-8 -*-
+# 데이터셋에 따라 씀
 
 import cv2
 
