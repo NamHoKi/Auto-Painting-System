@@ -1,0 +1,54 @@
+# Import a library of functions called 'pygame'
+import pygame
+from pygame.locals import *
+import cv2
+
+# Initialize the game engine
+pygame.init()
+
+# Set the height and width of the screen
+size = [630, 380]
+screen = pygame.display.set_mode(size)
+
+pygame.display.set_caption("자동채색")
+
+# Loop until the user clicks the close button.
+done = False
+clock = pygame.time.Clock()
+
+bgr = cv2.imread('rgb.png')
+color = [255,255,255]
+
+while not done:
+    clock.tick(10)
+
+    # Main Event Loop
+    for event in pygame.event.get():  # User did something
+        if event.type == pygame.QUIT:  # If user clicked close
+            done = True  # Flag that we are done so we exit this loop
+
+        LEFT = 1  # 왼쪽 버튼에 대한 버튼 인덱스
+
+        if event.type == MOUSEBUTTONUP and event.button == LEFT:
+            mouse_xy = pygame.mouse.get_pos()
+            x = (mouse_xy[0]) - 350
+            y = (mouse_xy[1]) - 20
+            b,g,r = bgr[y,x][0], bgr[y,x][1], bgr[y,x][2]
+            color = [r,g,b]
+
+        elif event.type == MOUSEMOTION:
+            mouse_xy = pygame.mouse.get_pos()
+            x = (mouse_xy[0])
+            y = (mouse_xy[1])
+
+    # Clear the screen and set the screen background
+    screen.fill((200, 200, 200))
+    screen.blit(pygame.image.load('multi_img_data/imgs_others_test_sketch/test_apple_02.png'), (20, 20))
+    screen.blit(pygame.image.load('rgb.png'), (350, 20))
+
+    pygame.draw.rect(screen, color, [20, 330, 300, 20], 0)
+
+    pygame.display.flip()
+
+# Be IDLE friendly
+pygame.quit()
