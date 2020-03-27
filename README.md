@@ -43,6 +43,14 @@
 ----------
 ## 스케치 인식후 사과면 색칠(0,0,255)
 ----------
+## GUI
+##### 색 지정 후 그 색으로 칠할 영역 선택 (마우스 이벤트)
+![gui1](https://user-images.githubusercontent.com/48282708/77724653-dd34ee80-7036-11ea-8b81-ac77e5baced0.png)
+![gui2](https://user-images.githubusercontent.com/48282708/77724655-defeb200-7036-11ea-8ed7-1a020576995d.png)
+![gui3](https://user-images.githubusercontent.com/48282708/77724656-defeb200-7036-11ea-952a-311278313a6b.png)
+![gui4](https://user-images.githubusercontent.com/48282708/77724657-df974880-7036-11ea-9824-f63faf49de2b.png)
+![gui5](https://user-images.githubusercontent.com/48282708/77724658-e02fdf00-7036-11ea-9af9-d380d22fcaf2.png)
+----------
 ### Memo
 ##### 바나나 , 복숭아 데이터 모으기
 ##### 구역나눈것을 어떻게 따로 색칠할것인지? -> 사과는 배경은 제외한 가장큰 영역 
