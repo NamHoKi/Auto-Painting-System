@@ -92,7 +92,7 @@ class Segmentation(object):
     
 #########################################################################
 # GUI_Pygame 에서 쓰는 코드
-# 1차 구현
+# 1차 구현 3/27
 
 import cv2
 import copy
