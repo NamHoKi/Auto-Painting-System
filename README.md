@@ -41,7 +41,9 @@
 #### + 영역 개수 > 5
 ![g](https://user-images.githubusercontent.com/48282708/75381890-eb4efc80-591c-11ea-8bf7-3708da3a0706.png)
 ----------
-## 스케치 인식후 사과면 색칠(0,0,255)
+## 스케치 인식
+![1](https://user-images.githubusercontent.com/48282708/77725150-1457cf80-7038-11ea-8144-9dcba60c801d.png)
+![2](https://user-images.githubusercontent.com/48282708/77725151-1588fc80-7038-11ea-8b2c-1b0660ba0a41.png)
 ----------
 ## GUI
 ##### 색 지정 후 그 색으로 칠할 영역 선택 (마우스 이벤트)
