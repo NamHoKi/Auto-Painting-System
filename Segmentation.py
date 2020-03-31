@@ -202,4 +202,3 @@ class Segmentation(object):
     #             if img[i][j] != 255 and img[i][j] != 0 and img[i][j] != 1:
     #                 count_list[img[i][j]] += 1
     #     return count_list.index(max(count_list))
-
