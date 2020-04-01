@@ -5,7 +5,7 @@
 #
 # caltech_dir = "./multi_img_data/imgs_others/train"
 #
-# categories = ["sketch_apple", "sketch_cherry"]
+# categories = ["sketch_apple", "sketch_cherry","sketch_avocado","sketch_tomato"]
 # nb_classes = len(categories)
 #
 # image_w = 64
@@ -46,15 +46,15 @@
 # np.save("./numpy_data/multi_image_data.npy", xy)
 #
 # print("ok", len(y))
-
-from keras.models import Sequential
-from keras.layers import Conv2D, MaxPooling2D, Dense, Flatten, Dropout
-from keras.callbacks import EarlyStopping, ModelCheckpoint
-import matplotlib.pyplot as plt
-import keras.backend.tensorflow_backend as K
-
-import tensorflow as tf
-
+#
+# from keras.models import Sequential
+# from keras.layers import Conv2D, MaxPooling2D, Dense, Flatten, Dropout
+# from keras.callbacks import EarlyStopping, ModelCheckpoint
+# import matplotlib.pyplot as plt
+# import keras.backend.tensorflow_backend as K
+#
+# import tensorflow as tf
+#
 # config = tf.compat.v1.ConfigProto()
 # config.gpu_options.allow_growth = True
 # session = tf.compat.v1.Session(config=config)
@@ -64,7 +64,7 @@ import tensorflow as tf
 # print(X_train.shape[0])
 #
 #
-# categories = ["sketch_apple", "sketch_cherry"]
+# categories = ["sketch_apple", "sketch_cherry","sketch_avocado","sketch_tomato"]
 # nb_classes = len(categories)
 #
 # X_train = X_train.astype(float) / 255
@@ -117,7 +117,6 @@ import tensorflow as tf
 # plt.grid()
 # plt.show()
 
-
 from PIL import Image
 import os, glob, numpy as np
 from keras.models import load_model
@@ -157,9 +156,14 @@ for i in prediction:
     pre_ans_str = ''
     if pre_ans == 0: pre_ans_str = "사과"
     elif pre_ans == 1: pre_ans_str = "체리"
+    elif pre_ans == 2: pre_ans_str = "아보카도"
+    elif pre_ans == 3: pre_ans_str = "토마토"
     if i[0] >= 0.8:
         print("해당 " + filenames[cnt].split("\\")[1] + "이미지는 " + pre_ans_str + "으로 추정됩니다.")
-        sg.start(filenames[cnt],[0,0,255],[150,150])
     if i[1] >= 0.8:
+        print("해당 " + filenames[cnt].split("\\")[1] + "이미지는 " + pre_ans_str + "으로 추정됩니다.")
+    if i[2] >= 0.8:
+        print("해당 " + filenames[cnt].split("\\")[1] + "이미지는 " + pre_ans_str + "으로 추정됩니다.")
+    if i[3] >= 0.8:
         print("해당 " + filenames[cnt].split("\\")[1] + "이미지는 " + pre_ans_str + "으로 추정됩니다.")
     cnt += 1
