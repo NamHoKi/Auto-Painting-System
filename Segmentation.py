@@ -3,6 +3,7 @@
 # 배경을 흰색으로 단정지을지 고민
 
 
+
 import cv2
 import copy
 
