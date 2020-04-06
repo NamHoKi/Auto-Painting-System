@@ -52,6 +52,10 @@
 ![gui4](https://user-images.githubusercontent.com/48282708/77724657-df974880-7036-11ea-9824-f63faf49de2b.png)
 ![gui5](https://user-images.githubusercontent.com/48282708/77724658-e02fdf00-7036-11ea-9af9-d380d22fcaf2.png)
 ----------
+## Filter
+##### 랜덤 x,y 좌표로부터 value만큼 떨어진 거리안의 픽셀(영역)의 명도조절
+![ㅁ](https://user-images.githubusercontent.com/48282708/78566130-c02fc500-7859-11ea-8873-d0ccaf16315e.png)
+----------
 ### Memo
 ##### 바나나 , 복숭아 데이터 모으기
 ##### 구역나눈것을 어떻게 따로 색칠할것인지? -> 사과는 배경은 제외한 가장큰 영역
