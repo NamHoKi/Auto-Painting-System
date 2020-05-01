@@ -7,8 +7,7 @@ class Segmentation(object):
         # target {0:사과 , 1:체리 , 2:토마토}
         origin_img = cv2.imread(file_name)
         if origin_img is None:
-            print('====================== Image not found ======================')
-            print('====================== File name : ' + file_name)
+            print('====================== error - not found : ' + file_name + '======================')
             return
 
         gray_img = cv2.imread(file_name,0)
