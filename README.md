@@ -44,6 +44,21 @@
 ![1](https://user-images.githubusercontent.com/48282708/77725150-1457cf80-7038-11ea-8144-9dcba60c801d.png)
 ![2](https://user-images.githubusercontent.com/48282708/77725151-1588fc80-7038-11ea-8b2c-1b0660ba0a41.png)
 ----------
+## 인식 후 영역 인식에 따른 영역 넓이 순 색칠
+![1](https://user-images.githubusercontent.com/48282708/80784737-fcd0b100-8bb8-11ea-80b9-13fdb8aea5eb.png)
+![2](https://user-images.githubusercontent.com/48282708/80784800-2e497c80-8bb9-11ea-9435-88dec020077f.png)
+![3](https://user-images.githubusercontent.com/48282708/80784782-22f65100-8bb9-11ea-9d79-1e01967fa609.png)
+![4](https://user-images.githubusercontent.com/48282708/80784786-24c01480-8bb9-11ea-8901-48320cc968c8.png)
+![5](https://user-images.githubusercontent.com/48282708/80784790-2558ab00-8bb9-11ea-895d-886d364f9f58.png)
+![6](https://user-images.githubusercontent.com/48282708/80784792-2689d800-8bb9-11ea-8e60-9d752e845feb.png)
+![8](https://user-images.githubusercontent.com/48282708/80784794-2984c880-8bb9-11ea-8b57-27c1b41f7aca.png)
+![9](https://user-images.githubusercontent.com/48282708/80784809-36a1b780-8bb9-11ea-96ba-e444bf22555e.png)
+![10](https://user-images.githubusercontent.com/48282708/80784811-37d2e480-8bb9-11ea-8fdc-01d8a28d170e.png)
+![11](https://user-images.githubusercontent.com/48282708/80784815-3a353e80-8bb9-11ea-8404-737d2405a104.png)
+![12](https://user-images.githubusercontent.com/48282708/80784816-3b666b80-8bb9-11ea-8790-006c7c4786a1.png)
+![13](https://user-images.githubusercontent.com/48282708/80784819-3c979880-8bb9-11ea-8390-e342d089e4c8.png)
+![14](https://user-images.githubusercontent.com/48282708/80784822-3e615c00-8bb9-11ea-9458-07734257416c.png)
+----------
 ## GUI
 ##### 색 지정 후 그 색으로 칠할 영역 선택 (마우스 이벤트)
 ![gui1](https://user-images.githubusercontent.com/48282708/77724653-dd34ee80-7036-11ea-8b81-ac77e5baced0.png)
