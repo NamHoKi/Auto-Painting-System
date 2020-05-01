@@ -7,7 +7,7 @@ class Train():
 
         caltech_dir = "./multi_img_data/imgs_others/train"
 
-        categories = ["sketch_apple", "sketch_cherry","sketch_tomato"]
+        categories = ["apple", "cherry","tomato", "avocado", "carrot", "flower", "leaf", "shellfish"]
         nb_classes = len(categories)
 
         image_w = 64
@@ -66,7 +66,7 @@ class Train():
         print(X_train.shape[0])
 
 
-        categories = ["sketch_apple", "sketch_cherry","sketch_tomato"]
+        categories = ["apple", "cherry","tomato", "avocado", "carrot", "flower", "leaf", "shellfish"]
         nb_classes = len(categories)
 
         X_train = X_train.astype(float) / 255
@@ -103,7 +103,7 @@ class Train():
         history = model.fit(X_train, y_train, batch_size=32, epochs=50,
                             validation_data=(X_test, y_test), callbacks=[checkpoint, early_stopping])
 
-        print("정확도 : %.4f" % (model.evaluateij(X_test, y_test)[1]))
+        print("정확도 : %.4f" % (model.evaluate(X_test, y_test)[1]))
 
 
         y_vloss = history.history['val_loss']
@@ -158,9 +158,16 @@ class Train():
             # print(i)
             # print(pre_ans)
             pre_ans_str = ''
+            # ["apple", "cherry", "tomato", "avocado", "carrot", "flower", "leaf", "shellfish"]
             if pre_ans == 0: pre_ans_str = "사과"
             elif pre_ans == 1: pre_ans_str = "체리"
             elif pre_ans == 2: pre_ans_str = "토마토"
+            elif pre_ans == 3: pre_ans_str = "아보카도"
+            elif pre_ans == 4: pre_ans_str = "당근"
+            elif pre_ans == 5: pre_ans_str = "꽃"
+            elif pre_ans == 6: pre_ans_str = "잎"
+            elif pre_ans == 7: pre_ans_str = "조개"
+
             if i[0] >= 0.8:
                 print("해당 " + filenames[cnt].split("\\")[1] + " 이미지는 " + pre_ans_str + "으로 추정됩니다.")
                 sg.start('multi_img_data/imgs_others_test_sketch/' + filenames[cnt].split("\\")[1], 0)
@@ -170,9 +177,23 @@ class Train():
             if i[2] >= 0.8:
                 print("해당 " + filenames[cnt].split("\\")[1] + " 이미지는 " + pre_ans_str + "으로 추정됩니다.")
                 sg.start('multi_img_data/imgs_others_test_sketch/' + filenames[cnt].split("\\")[1], 2)
-            # if i[3] >= 0.8:
-            #     print("해당 " + filenames[cnt].split("\\")[1] + "이미지는 " + pre_ans_str + "으로 추정됩니다.")
+            if i[3] >= 0.8:
+                print("해당 " + filenames[cnt].split("\\")[1] + " 이미지는 " + pre_ans_str + "으로 추정됩니다.")
+                sg.start('multi_img_data/imgs_others_test_sketch/' + filenames[cnt].split("\\")[1], 3)
+            if i[4] >= 0.8:
+                print("해당 " + filenames[cnt].split("\\")[1] + " 이미지는 " + pre_ans_str + "으로 추정됩니다.")
+                sg.start('multi_img_data/imgs_others_test_sketch/' + filenames[cnt].split("\\")[1], 4)
+            if i[5] >= 0.8:
+                print("해당 " + filenames[cnt].split("\\")[1] + " 이미지는 " + pre_ans_str + "으로 추정됩니다.")
+                sg.start('multi_img_data/imgs_others_test_sketch/' + filenames[cnt].split("\\")[1], 5)
+            if i[6] >= 0.8:
+                print("해당 " + filenames[cnt].split("\\")[1] + " 이미지는 " + pre_ans_str + "으로 추정됩니다.")
+                sg.start('multi_img_data/imgs_others_test_sketch/' + filenames[cnt].split("\\")[1], 6)
+            if i[7] >= 0.8:
+                print("해당 " + filenames[cnt].split("\\")[1] + " 이미지는 " + pre_ans_str + "으로 추정됩니다.")
+                sg.start('multi_img_data/imgs_others_test_sketch/' + filenames[cnt].split("\\")[1], 7)
             cnt += 1
 
 t = Train()
+# t.make_model()
 t.classification()
