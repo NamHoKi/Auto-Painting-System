@@ -3,18 +3,15 @@ from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 from datetime import datetime
-# from classification import classification
+from classification import classification
 from Fill_color import Fill_color
 import cv2
-
-from Train import Train
 
 class drawing_board(QWidget):
 
     def __init__(self):
         super().__init__()
         QApplication.setAttribute(Qt.AA_EnableHighDpiScaling, True)  # 화면크기스케일링
-        # self.file = 'apple.png'
         self.file = ''
 
         # 전체 폼 박스
@@ -43,8 +40,8 @@ class drawing_board(QWidget):
             self.radiobtns[i].clicked.connect(self.radioClicked)
             box.addWidget(self.radiobtns[i])
 
-        self.radiobtns[0].setChecked(True)
-        self.drawType = 0
+        self.radiobtns[1].setChecked(True)
+        self.drawType = 1
 
         # 그룹박스2
         gb = QGroupBox('펜 설정')
@@ -59,7 +56,7 @@ class drawing_board(QWidget):
         self.combo = QComboBox()
         grid.addWidget(self.combo, 0, 1)
 
-        for i in range(1, 21):
+        for i in range(4, 21):
             self.combo.addItem(str(i))
 
         label = QLabel('선색상')
@@ -117,24 +114,15 @@ class drawing_board(QWidget):
 
         # 우 레이아웃 박스에 그래픽 뷰 추가
         self.view = CView(self)
+        self.view.setFixedWidth(300)
+        self.view.setFixedHeight(300)
         right.addWidget(self.view)
 
-        # # 제일 오른쪽 레이아웃에 빈 흰색 배경
-        # pixmap = QPixmap('whiteimage.png')  # jpg 는 안되는데 왜 안되는 지 아직 모르겠다..
-        # lbl_img = QLabel()
-        # lbl_img.setPixmap(pixmap)
-        # self.right2.addWidget(lbl_img)
-
-        # # 제일 오른쪽 레이아웃에 사진 넣을거임
-        # pixmap = QPixmap('apple.png')    # jpg 는 안되는데 왜 안되는 지 아직 모르겠다..
-        #
-        # lbl_img = QLabel()
-        # lbl_img.setPixmap(pixmap)
-        # # lbl_size = QLabel('Width: ' + str(pixmap.width()) + ', Height: ' + str(pixmap.height()))
-        # # lbl_size.setAlignment(Qt.AlignCenter)
-        #
-        # right2.addWidget(lbl_img)
-        # # right2.addWidget(lbl_size)
+        # 제일 오른쪽 레이아웃에 빈 흰색 배경
+        pixmap = QPixmap('whiteimage.png')
+        self.lbl_img = QLabel()
+        self.lbl_img.setPixmap(pixmap)
+        self.right2.addWidget(self.lbl_img)
 
         # 전체 폼박스에 레이아웃 박스 배치
         formbox.addLayout(left)
@@ -144,7 +132,7 @@ class drawing_board(QWidget):
         formbox.setStretchFactor(left, 0)
         formbox.setStretchFactor(right, 1)
 
-        self.setGeometry(100, 100, 435, 500)
+        self.setGeometry(100, 100, 700, 400)
 
     def radioClicked(self):
         for i in range(len(self.radiobtns)):
@@ -185,39 +173,29 @@ class drawing_board(QWidget):
             self.view.scene.removeItem(i)
 
     def load_image(self):
-        train = Train()
-        # 여기서 model 생성 여부 확인 해야함 --> 나중에 추가
+        self.lbl_img.hide()     # 전 이미지 숨김
 
-        train.classification()
-    #     label = classification().label
-    #     print(label)
-    #
-    #     fill = Fill_color(self.file)
-    #     self.file = fill.file
-    #     print(self.file)
+        label = classification().label  # 이미지 분류
+        print(label)
 
-        # 제일 오른쪽 레이아웃에 사진 넣을거임
+        fill = Fill_color(self.file)    #이미지 색칠
+        self.file = fill.file
+        print(self.file)
+
         pixmap = QPixmap(self.file)  # jpg 는 안되는데 왜 안되는 지 아직 모르겠다..
 
-        lbl_img = QLabel()
-        lbl_img.setPixmap(pixmap)
-        # lbl_size = QLabel('Width: ' + str(pixmap.width()) + ', Height: ' + str(pixmap.height()))
-        # lbl_size.setAlignment(Qt.AlignCenter)
-
-        self.right2.addWidget(lbl_img)
-        # right2.addWidget(lbl_size)
+        self.lbl_img = QLabel()
+        self.lbl_img.setPixmap(pixmap)
+        self.right2.addWidget(self.lbl_img)
 
 
 # QGraphicsView display QGraphicsScene
 class CView(QGraphicsView):
 
     def __init__(self, parent):
-
         super().__init__(parent)
         self.scene = QGraphicsScene()
         self.setScene(self.scene)
-        self.photo = QGraphicsPixmapItem()
-        self.scene.addItem(self.photo)
 
         self.items = []
 
@@ -254,7 +232,7 @@ class CView(QGraphicsView):
                 self.start = e.pos()
                 return None
 
-            pen = QPen(self.parent().pencolor, self.parent().combo.currentIndex())
+            pen = QPen(self.parent().pencolor, self.parent().combo.currentIndex()+3)
 
             # 직선 그리기
             if self.parent().drawType == 0:
