@@ -5,14 +5,19 @@ import cv2
 import numpy as np
 
 class Fill_color(object):
-    def start(self):
-        while True:
-            file = input('$ File Name: ')
-            origin = cv2.imread(file,0)
-            origin_color = cv2.imread(file)
+    def __init__(self, filename):
+        self.file = ''
+        self.start(filename)
+
+    def start(self, filename):
+        # while True:
+            # file = input('$ File Name: ')
+            # file = './multi_img_data/imgs_others_test_sketch/' + filename
+            origin = cv2.imread(filename,0)
+            origin_color = cv2.imread(filename)
 
             if origin is None or origin_color is None:
-                print('Not found '+file)
+                print('Not found '+filename)
             else:
                 bin_img = self.binarize(origin, 220)
                 open_img = self.image_open(bin_img)
@@ -20,8 +25,10 @@ class Fill_color(object):
                 dilate_img = self.image_dilate(reverse_img, 1, 1)
                 white_img, transform = self.fill_white(reverse_img, dilate_img)
                 color_img = self.fill_color(origin_color,transform,[0,0,255])
-                cv2.imshow('Result',color_img)
-                cv2.waitKey(0)
+                # cv2.imshow('Result',color_img)
+                cv2.imwrite('./multi_img_data/result/result.png', color_img)
+                self.file = './multi_img_data/result/result.png'
+                # cv2.waitKey(0)
 
     def binarize(self, img, threshold):
         # 이진화
@@ -74,27 +81,27 @@ class Fill_color(object):
         return [color, transform]
 
     # 픽셀값 변경하면서 해보는중
-#     def fill_color(self, img, transform, color):
-#         for t in transform:
-#             img[t[0]][t[1]] = np.array(color)
-#         return img
-    
-#         def fill_color(self, img, transform, color):
-#         count = 0
-#         temp_color = copy.deepcopy(color)
-        
-#         for t in transform:
-#             img[t[0]][t[1]] = np.array(temp_color)
-            
-#             if count >= 100:
-#                 temp_color = copy.deepcopy(color)
-#                 count = count % 100
-#             else:
-#                 temp_color[0] += 3
-#                 temp_color[1] += 3
-#                 count += 3
-#         dst = cv2.GaussianBlur(img, (5, 5), 0)
-#         return dst
+    def fill_color(self, img, transform, color):
+        for t in transform:
+            img[t[0]][t[1]] = np.array(color)
+        return img
+
+    # def fill_color(self, img, transform, color):
+    #     count = 0
+    #     temp_color = copy.deepcopy(color)
+    #
+    #     for t in transform:
+    #         img[t[0]][t[1]] = np.array(temp_color)
+    #
+    #         if count >= 100:
+    #             temp_color = copy.deepcopy(color)
+    #             count = count % 100
+    #         else:
+    #             temp_color[0] += 3
+    #             temp_color[1] += 3
+    #             count += 3
+    #     dst = cv2.GaussianBlur(img, (5, 5), 0)
+    #     return dst
 
 #     def fill_color(self, img, transform, color):
 #         r, g ,b = color[2], color[1], color[0]
@@ -105,6 +112,6 @@ class Fill_color(object):
 
 #         dst = cv2.GaussianBlur(img, (5, 5), 0)
 #         return dst
-
-main = Fill_color()
-main.start()
+#
+# main = Fill_color()
+# main.start()
