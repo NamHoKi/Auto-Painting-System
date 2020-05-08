@@ -1,5 +1,7 @@
 import cv2
 import copy
+import random
+import math
 
 class Fill_color(object):
     def __init__(self, filename, label):
@@ -18,6 +20,7 @@ class Fill_color(object):
 
         sg_img , count = self.segmentation(bin_img)
         result = self.segmentation_image_show(origin_img,sg_img, label)
+        result = self.natual_coloring(result, 100)
         cv2.imwrite('./multi_img_data/result/result.png', result)
         self.file = './multi_img_data/result/result.png'
 
@@ -202,8 +205,6 @@ class Fill_color(object):
                             color_img[i][j] = color[seg_cnt]
         return color_img
 
-
-
     def return_size(self,img, return_num):
         count_list = [0] * 255
         for i in range(len(img)):
@@ -216,3 +217,27 @@ class Fill_color(object):
             count_sort_list.append(count_list.index(max(count_list)))
             count_list[count_sort_list[i]] = 0
         return count_sort_list
+
+    def natual_coloring(self, img, value):
+        random_num = random.randrange(125,175)
+        for i in range(random_num-value,random_num+value):
+            for j in range(random_num-value,random_num+value):
+                d = self.p2p_dst(i,j,random_num,random_num)
+                if d <= value and self.img2np(img[i][j],[0,0,0]) and self.img2np(img[i][j],[255,255,255]):
+                    for k in range(0,3):
+                        img[i][j][k] = self.check255(img[i][j][k] + value - d)
+        return img
+        # img = cv2.GaussianBlur(img, (11, 11), 0)
+
+    def p2p_dst(self,x1,y1,x2,y2):
+        return int(math.sqrt((x2-x1)**2 + (y2-y1)**2))
+
+    def img2np(self,v1,v2):
+        if v1[0] == v2[0] and v1[1] == v2[1] and v1[2] == v2[2]:
+            return False
+        return True
+
+    def check255(self,v):
+        if v >= 255:
+            return 255
+        return v
