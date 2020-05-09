@@ -19,7 +19,7 @@ class Fill_color(object):
         bin_img = self.binarize(gray_img, 250)
 
         sg_img , count = self.segmentation(bin_img)
-        result = self.segmentation_image_show(origin_img,sg_img, label)
+        result = self.segmentation_image_show(origin_img,sg_img, label, count)
         result = self.natual_coloring(result, 100)
         cv2.imwrite('./multi_img_data/result/result.png', result)
         self.file = './multi_img_data/result/result.png'
@@ -134,15 +134,15 @@ class Fill_color(object):
                                 q.append([x + offset[i][0], y + offset[i][1]])
         return [segmentation_img, count]
 
-    def segmentation_image_show(self,origin_img, segmentation_img , label):
+    def segmentation_image_show(self,origin_img, segmentation_img , label, count):
         color_img = copy.deepcopy(origin_img)
         # print(count) # 세그먼트 개수 출력
         # [4,2,173] # 체리색
 
-        color_count = self.return_size(copy.deepcopy(segmentation_img),3)
+        color_count = self.return_size(copy.deepcopy(segmentation_img),20)
         if label == 'apple':
             # 사과
-            color = [0,0,255]
+            color = [0,0,180]
             for i in range(len(segmentation_img)):
                 for j in range(len(segmentation_img[0])):
                     if segmentation_img[i][j] != 0 and segmentation_img[i][j] != 255 and segmentation_img[i][j] == color_count[0]:
@@ -150,14 +150,15 @@ class Fill_color(object):
         elif label == 'cherry':
             # 체리
             color = [4,2,173]
-            for seg_cnt in range(2):
+            print(count, color_count)
+            for seg_cnt in range(count - 1):
                 for i in range(len(segmentation_img)):
                     for j in range(len(segmentation_img[0])):
                         if segmentation_img[i][j] != 0 and segmentation_img[i][j] != 255 and segmentation_img[i][j] == color_count[seg_cnt]:
                             color_img[i][j] = color
         elif label == 'tomato':
             # 토마토
-            color = [[0,0,255],[0,255,0]]
+            color = [[0,0,180],[0,100,0]]
             for seg_cnt in range(2):
                 for i in range(len(segmentation_img)):
                     for j in range(len(segmentation_img[0])):
