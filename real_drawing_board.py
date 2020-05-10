@@ -1,320 +1,266 @@
-import sys
-from PyQt5.QtCore import *
-from PyQt5.QtGui import *
-from PyQt5.QtWidgets import *
-from datetime import datetime
-from classification import classification
-from Fill_color import Fill_color
 import cv2
+import copy
+import random
+import math
 
-class drawing_board(QWidget):
-
-    def __init__(self):
-        super().__init__()
-        QApplication.setAttribute(Qt.AA_EnableHighDpiScaling, True)  # 화면크기스케일링
+class Fill_color(object):
+    def __init__(self, filename, label):
         self.file = ''
-
-        # 전체 폼 박스
-        formbox = QHBoxLayout()
-        self.setLayout(formbox)
-
-        # 좌, 우 레이아웃박스
-        left = QVBoxLayout()
-        right = QVBoxLayout()
-        self.right2 = QVBoxLayout()
-
-        # 그룹박스1 생성 및 좌 레이아웃 배치
-        gb = QGroupBox('그리기 종류')
-        left.addWidget(gb)
-
-        # 그룹박스1 에서 사용할 레이아웃
-        box = QVBoxLayout()
-        gb.setLayout(box)
-
-        # 그룹박스 1 의 라디오 버튼 배치
-        text = ['line', 'Curve', 'Rectange', 'Ellipse']
-        self.radiobtns = []
-
-        for i in range(len(text)):
-            self.radiobtns.append(QRadioButton(text[i], self))
-            self.radiobtns[i].clicked.connect(self.radioClicked)
-            box.addWidget(self.radiobtns[i])
-
-        self.radiobtns[1].setChecked(True)
-        self.drawType = 1
-
-        # 그룹박스2
-        gb = QGroupBox('펜 설정')
-        left.addWidget(gb)
-
-        grid = QGridLayout()
-        gb.setLayout(grid)
-
-        label = QLabel('선굵기')
-        grid.addWidget(label, 0, 0)
-
-        self.combo = QComboBox()
-        grid.addWidget(self.combo, 0, 1)
-
-        for i in range(4, 21):
-            self.combo.addItem(str(i))
-
-        label = QLabel('선색상')
-        grid.addWidget(label, 1, 0)
-
-        self.pencolor = QColor(0, 0, 0)
-        self.penbtn = QPushButton()
-        self.penbtn.setStyleSheet('background-color: rgb(0,0,0)')
-        self.penbtn.clicked.connect(self.showColorDlg)
-        grid.addWidget(self.penbtn, 1, 1)
-
-        # 그룹박스3
-        gb = QGroupBox('붓 설정')
-        left.addWidget(gb)
-
-        hbox = QHBoxLayout()
-        gb.setLayout(hbox)
-
-        label = QLabel('붓색상')
-        hbox.addWidget(label)
-
-        self.brushcolor = QColor(255, 255, 255)
-        self.brushbtn = QPushButton()
-        self.brushbtn.setStyleSheet('background-color: rgb(255,255,255)')
-        self.brushbtn.clicked.connect(self.showColorDlg)
-        hbox.addWidget(self.brushbtn)
-
-        # 그룹박스4
-        gb = QGroupBox('지우개')
-        left.addWidget(gb)
-
-        hbox = QHBoxLayout()
-        gb.setLayout(hbox)
-
-        self.checkbox = QCheckBox('지우개 동작')
-        self.checkbox.stateChanged.connect(self.checkClicked)
-        hbox.addWidget(self.checkbox)
-
-        # 전체 지우기
-        removebutton = QPushButton('전체 지우기', self)
-        left.addWidget(removebutton)
-        removebutton.clicked.connect(self.remove_all)
-
-        # 사진저장 버튼
-        # savebutton = QPushButton('그림 저장', self)
-        # left.addWidget(savebutton)
-        # savebutton.clicked.connect(self.save_image)
-
-        # painting 버튼
-        paintingbutton = QPushButton('자동 채색', self)
-        left.addWidget(paintingbutton)
-        paintingbutton.clicked.connect(self.load_image)
-
-        left.addStretch(1)  # 그냥 레이아웃 여백 추가
-
-        # 우 레이아웃 박스에 그래픽 뷰 추가
-        self.view = CView(self)
-        self.view.setFixedWidth(300)
-        self.view.setFixedHeight(300)
-        right.addWidget(self.view)
-
-        # 제일 오른쪽 레이아웃에 빈 흰색 배경
-        pixmap = QPixmap('whiteimage.png')
-        self.lbl_img = QLabel()
-        self.lbl_img.setPixmap(pixmap)
-        self.right2.addWidget(self.lbl_img)
-
-        # 전체 폼박스에 레이아웃 박스 배치
-        formbox.addLayout(left)
-        formbox.addLayout(right)
-        formbox.addLayout(self.right2)
-
-        formbox.setStretchFactor(left, 0)
-        formbox.setStretchFactor(right, 1)
-
-        self.setGeometry(100, 100, 700, 400)
-
-    def radioClicked(self):
-        for i in range(len(self.radiobtns)):
-            if self.radiobtns[i].isChecked():
-                self.drawType = i
-                break
-
-    def checkClicked(self):
-        pass
-
-    def showColorDlg(self):
-
-        # 색상 대화상자 생성
-        color = QColorDialog.getColor()
-
-        sender = self.sender()
-
-        # 색상이 유효한 값이면 참, QFrame에 색 적용
-        if sender == self.penbtn and color.isValid():
-            self.pencolor = color
-            self.penbtn.setStyleSheet('background-color: {}'.format(color.name()))
-        else:
-            self.brushcolor = color
-            self.brushbtn.setStyleSheet('background-color: {}'.format(color.name()))
-
-    def save_image(self):
-        date = datetime.now()
-        filename = 'Screenshot ' + date.strftime('%Y-%m-%d_%H-%M-%S.png')
-        img = QPixmap(self.view.grab(self.view.sceneRect().toRect()))
-        self.file = "./multi_img_data/imgs_others_test_sketch/" + filename
-        img.save(self.file, 'png')
-        img = cv2.imread(self.file, 0)
-        img = img[1:476, 1:663]
-        cv2.imwrite(self.file, img)
-
-    def remove_all(self):
-        for i in self.view.scene.items():
-            self.view.scene.removeItem(i)
-
-    def load_image(self):
-        self.save_image()
-        self.lbl_img.hide()     # 전 이미지 숨김
-
-        label = classification().label  # 이미지 분류
-        # print(label)
-
-        fill = Fill_color(self.file, label)    #이미지 색칠
-        self.file = fill.file
-        print(self.file)
-
-        pixmap = QPixmap(self.file)  # jpg 는 안되는데 왜 안되는 지 아직 모르겠다..
-
-        self.lbl_img = QLabel()
-        self.lbl_img.setPixmap(pixmap)
-        self.right2.addWidget(self.lbl_img)
-
-
-# QGraphicsView display QGraphicsScene
-class CView(QGraphicsView):
-
-    def __init__(self, parent):
-        super().__init__(parent)
-        self.scene = QGraphicsScene()
-        self.setScene(self.scene)
-
-        self.items = []
-
-        self.start = QPointF()
-        self.end = QPointF()
-
-        self.setRenderHint(QPainter.HighQualityAntialiasing)
-
-    def moveEvent(self, e):
-        rect = QRectF(self.rect())
-        rect.adjust(0, 0, -2, -2)
-
-        self.scene.setSceneRect(rect)
-
-    def mousePressEvent(self, e):
-
-        if e.button() == Qt.LeftButton:
-            # 시작점 저장
-            self.start = e.pos()
-            self.end = e.pos()
-
-    def mouseMoveEvent(self, e):
-        # e.buttons()는 정수형 값을 리턴, e.button()은 move시 Qt.Nobutton 리턴
-        if e.buttons() & Qt.LeftButton:
-
-            self.end = e.pos()
-
-            if self.parent().checkbox.isChecked():
-                pen = QPen(QColor(255, 255, 255), 10)
-                path = QPainterPath()
-                path.moveTo(self.start)
-                path.lineTo(self.end)
-                self.scene.addPath(path, pen)
-                self.start = e.pos()
-                return None
-
-            pen = QPen(self.parent().pencolor, self.parent().combo.currentIndex()+3)
-
-            # 직선 그리기
-            if self.parent().drawType == 0:
-
-                # 장면에 그려진 이전 선을 제거
-                if len(self.items) > 0:
-                    self.scene.removeItem(self.items[-1])
-                    del (self.items[-1])
-
-                    # 현재 선 추가
-                line = QLineF(self.start.x(), self.start.y(), self.end.x(), self.end.y())
-                self.items.append(self.scene.addLine(line, pen))
-
-            # 곡선 그리기
-            if self.parent().drawType == 1:
-                # Path 이용
-                path = QPainterPath()
-                path.moveTo(self.start)
-                path.lineTo(self.end)
-                self.scene.addPath(path, pen)
-
-                # Line 이용
-                # line = QLineF(self.start.x(), self.start.y(), self.end.x(), self.end.y())
-                # self.scene.addLine(line, pen)
-
-                # 시작점을 다시 기존 끝점으로
-                self.start = e.pos()
-
-            # 사각형 그리기
-            if self.parent().drawType == 2:
-                brush = QBrush(self.parent().brushcolor)
-
-                if len(self.items) > 0:
-                    self.scene.removeItem(self.items[-1])
-                    del (self.items[-1])
-
-                rect = QRectF(self.start, self.end)
-                self.items.append(self.scene.addRect(rect, pen, brush))
-
-            # 원 그리기
-            if self.parent().drawType == 3:
-                brush = QBrush(self.parent().brushcolor)
-
-                if len(self.items) > 0:
-                    self.scene.removeItem(self.items[-1])
-                    del (self.items[-1])
-
-                rect = QRectF(self.start, self.end)
-                self.items.append(self.scene.addEllipse(rect, pen, brush))
-
-    def mouseReleaseEvent(self, e):
-        if e.button() == Qt.LeftButton:
-
-            if self.parent().checkbox.isChecked():
-                return None
-
-            pen = QPen(self.parent().pencolor, self.parent().combo.currentIndex())
-
-            if self.parent().drawType == 0:
-                self.items.clear()
-                line = QLineF(self.start.x(), self.start.y(), self.end.x(), self.end.y())
-
-                self.scene.addLine(line, pen)
-
-            if self.parent().drawType == 2:
-                brush = QBrush(self.parent().brushcolor)
-
-                self.items.clear()
-                rect = QRectF(self.start, self.end)
-                self.scene.addRect(rect, pen, brush)
-
-            if self.parent().drawType == 3:
-                brush = QBrush(self.parent().brushcolor)
-
-                self.items.clear()
-                rect = QRectF(self.start, self.end)
-                self.scene.addEllipse(rect, pen, brush)
-
-
-# if __name__ == '__main__':
-#     app = QApplication(sys.argv)
-#     w = drawing_board()
-#     w.show()
-#     sys.exit(app.exec_())
+        self.start(filename, label)
+
+    def start(self, file_name, label):
+        # label {0:사과 , 1:체리 , 2:토마토}
+        origin_img = cv2.imread(file_name)
+        if origin_img is None:
+            print('====================== error - not found : ' + file_name + '======================')
+            return
+
+        gray_img = cv2.imread(file_name,0)
+        bin_img = self.binarize(gray_img, 250)
+
+        sg_img , count = self.segmentation(bin_img)
+        result = self.segmentation_image_show(origin_img,sg_img, label, count)
+        result = self.natual_coloring(result, 100)
+        cv2.imwrite('./multi_img_data/result/result.png', result)
+        self.file = './multi_img_data/result/result.png'
+
+
+    def binarize(self, img, threshold):
+        # 이진화
+        ret, bin_img = cv2.threshold(img, threshold, 255, cv2.THRESH_BINARY)
+        return bin_img
+
+    # def segmentation(self, img):
+    #     segmentation_img = copy.deepcopy(img)
+    #     offset = [[1, 0], [0, 1], [-1, 0], [0, -1]]
+    #     count = 0
+    #     start_point = []
+    #
+    #     for i in range(len(img)):
+    #         for j in range(len(img[0])):
+    #             if segmentation_img[i][j] == 255:
+    #                 start_point.append([i, j])
+    #                 count += 1
+    #                 q = [[i, j]]
+    #                 while q:
+    #                     cur = q.pop(0)
+    #                     x, y = cur[0], cur[1]
+    #                     if x < 0 or y < 0:
+    #                         pass
+    #                     elif x > len(img) - 1 or y > len(img[0]) - 1:
+    #                         pass
+    #                     elif segmentation_img[x][y] != 255:
+    #                         pass
+    #                     else:
+    #                         segmentation_img[x][y] = count
+    #                         for i in range(4):
+    #                             q.append([x + offset[i][0], y + offset[i][1]])
+    #     return segmentation_img
+    #
+    # def segmentation_image_show(self, origin_img, segmentation_img, color, xy):
+    #     color_img = copy.deepcopy(origin_img)
+    #     color_count = segmentation_img[xy[0]][xy[1]]
+    #
+    #     for i in range(len(segmentation_img)):
+    #         for j in range(len(segmentation_img[0])):
+    #             if segmentation_img[i][j] != 0 and segmentation_img[i][j] != 255 and segmentation_img[i][j] == color_count:
+    #                 color_img[i][j] = color
+    #     self.natual_coloring(color_img,50)
+    #     return color_img
+    #
+    # def natual_coloring(self, img, value):
+    #     random_num = random.randrange(125,175)
+    #     for i in range(random_num-value,random_num+value):
+    #         for j in range(random_num-value,random_num+value):
+    #             d = self.p2p_dst(i,j,random_num,random_num)
+    #             if d <= value and self.img2np(img[i][j],[0,0,0]) and self.img2np(img[i][j],[255,255,255]):
+    #                 for k in range(0,3):
+    #                     img[i][j][k] = self.check255(img[i][j][k] + value - d)
+    #     # img = cv2.GaussianBlur(img, (11, 11), 0)
+    #
+    # def p2p_dst(self,x1,y1,x2,y2):
+    #     return int(math.sqrt((x2-x1)**2 + (y2-y1)**2))
+    #
+    # def img2np(self,v1,v2):
+    #     if v1[0] == v2[0] and v1[1] == v2[1] and v1[2] == v2[2]:
+    #         return False
+    #     return True
+    #
+    # def check255(self,v):
+    #     if v >= 255:
+    #         return 255
+    #     return v
+    #
+    # def filter(self, img):
+    #     ft = cv2.imread('ra.png')
+    #     for i in range(0,len(img)):
+    #         for j in range(0,len(img[0])):
+    #             if [img[i][j][0],img[i][j][1],img[i][j][2]] !=[255,255,255] and [img[i][j][0],img[i][j][1],img[i][j][2]] !=[0,0,0]:
+    #                 # 명도 사용하기
+    #                 img[i][j][0] = img[i][j][0] + ft[i][j][0]
+    #                 img[i][j][1] = img[i][j][1] + ft[i][j][1]
+    #                 img[i][j][2] = img[i][j][2] + ft[i][j][2]
+    #
+    #                 ## 그대로 가져오기
+    #                 # img[i][j][0] = ft[i][j][0]
+    #                 # img[i][j][1] = ft[i][j][1]
+    #                 # img[i][j][2] = ft[i][j][2]
+
+    def segmentation(self, img):
+        segmentation_img = copy.deepcopy(img)
+        offset = [[1, 0], [0, 1], [-1, 0], [0, -1]]
+        count = 0
+        start_point = []
+
+        for i in range(len(img)):
+            for j in range(len(img[0])):
+                if segmentation_img[i][j] == 255:
+                    start_point.append([i,j])
+                    count += 1
+
+                    q = [[i,j]]
+                    while q:
+                        cur = q.pop(0)
+                        x, y = cur[0], cur[1]
+                        if x < 0 or y < 0:
+                            pass
+                        elif x > len(img) - 1 or y > len(img[0]) - 1:
+                            pass
+                        elif segmentation_img[x][y] != 255:
+                            pass
+                        else:
+                            segmentation_img[x][y] = count
+                            for i in range(4):
+                                q.append([x + offset[i][0], y + offset[i][1]])
+        return [segmentation_img, count]
+
+    def segmentation_image_show(self,origin_img, segmentation_img , label, count):
+        color_img = copy.deepcopy(origin_img)
+        # print(count) # 세그먼트 개수 출력
+        # [4,2,173] # 체리색
+
+        print('해당 이미지는 '+label+'(으)로 추정됩니다.')
+        color_count = self.return_size(copy.deepcopy(segmentation_img),20)
+        if label == 'apple':
+            # 사과
+            color = [0,0,180]
+            for i in range(len(segmentation_img)):
+                for j in range(len(segmentation_img[0])):
+                    if segmentation_img[i][j] == color_count[0]:
+                        color_img[i][j] = color
+        elif label == 'cherry':
+            # 체리
+            color = [4,2,173]
+            start_point = 0
+            black_list = []
+            if count >= 3:
+                for i in range(len(segmentation_img)):
+                    check = False
+                    for j in range(len(segmentation_img[0])):
+                        if segmentation_img[i][j] == 0:
+                            start_point = i
+                            print(start_point)
+                            check = True
+                            break
+                    if check:
+                        break
+
+            for seg_cnt in range(count - 1):
+                for i in range(start_point, len(segmentation_img)):
+                    for j in range(len(segmentation_img[0])):
+                        if segmentation_img[i][j] == color_count[seg_cnt]:
+                            black_list_check = True
+                            # 블랙리스트 추가 조건
+                            if start_point + 50 > i:
+                                if not (segmentation_img[i][j] in black_list):
+                                    black_list.append(segmentation_img[i][j])
+                            # 블랙리스트면 색칠하지 않음
+                            for k in range(len(black_list)):
+                                if segmentation_img[i][j] == black_list[k]:
+                                    black_list_check = False
+                            if black_list_check:
+                                color_img[i][j] = color
+        elif label == 'tomato':
+            # 토마토
+            color = [[0,0,180],[0,100,0]]
+            for seg_cnt in range(2):
+                for i in range(len(segmentation_img)):
+                    for j in range(len(segmentation_img[0])):
+                        if segmentation_img[i][j] == color_count[seg_cnt]:
+                            color_img[i][j] = color[seg_cnt]
+        elif label == 'avocado':
+            # 아보카도
+            color = [[0,0,255],[0,255,0]]
+            for seg_cnt in range(2):
+                for i in range(len(segmentation_img)):
+                    for j in range(len(segmentation_img[0])):
+                        if segmentation_img[i][j] == color_count[seg_cnt]:
+                            color_img[i][j] = color[seg_cnt]
+        elif label == 'flower':
+            # 꽃
+            color = [0,200,200]
+            for seg_cnt in range(1):
+                for i in range(len(segmentation_img)):
+                    for j in range(len(segmentation_img[0])):
+                        if segmentation_img[i][j] == color_count[seg_cnt]:
+                            color_img[i][j] = color[seg_cnt]
+        elif label == 'leaf':
+            # 잎
+            color = [0,200,0]
+            for i in range(len(segmentation_img)):
+                for j in range(len(segmentation_img[0])):
+                    if segmentation_img[i][j] != 0 and segmentation_img[i][j] != 255 and segmentation_img[i][j] != 1:
+                        color_img[i][j] = color
+        elif label == 'shellfish':
+            # 조개
+            color = [50,50,50]
+            for i in range(len(segmentation_img)):
+                for j in range(len(segmentation_img[0])):
+                    if segmentation_img[i][j] != 0 and segmentation_img[i][j] != 255 and segmentation_img[i][j] != 1:
+                        color_img[i][j] = color
+        elif label == 'carrot':
+            # 당근
+            color = [[0,0,255],[0,255,0]]
+            for seg_cnt in range(2):
+                for i in range(len(segmentation_img)):
+                    for j in range(len(segmentation_img[0])):
+                        if segmentation_img[i][j] == color_count[seg_cnt]:
+                            color_img[i][j] = color[seg_cnt]
+        return color_img
+
+    def return_size(self,img, return_num):
+        count_list = [0] * 255
+        for i in range(len(img)):
+            for j in range(len(img[0])):
+                if img[i][j] != 255 and img[i][j] != 0 and img[i][j] != 1:
+                    count_list[img[i][j]] += 1
+
+        count_sort_list = []
+        for i in range(return_num):
+            count_sort_list.append(count_list.index(max(count_list)))
+            count_list[count_sort_list[i]] = 0
+        return count_sort_list
+
+    def natual_coloring(self, img, value):
+        random_num = random.randrange(125,175)
+        for i in range(random_num-value,random_num+value):
+            for j in range(random_num-value,random_num+value):
+                d = self.p2p_dst(i,j,random_num,random_num)
+                if d <= value and self.img2np(img[i][j],[0,0,0]) and self.img2np(img[i][j],[255,255,255]):
+                    for k in range(0,3):
+                        img[i][j][k] = self.check255(img[i][j][k] + value - d)
+        return img
+        # img = cv2.GaussianBlur(img, (11, 11), 0)
+
+    def p2p_dst(self,x1,y1,x2,y2):
+        return int(math.sqrt((x2-x1)**2 + (y2-y1)**2))
+
+    def img2np(self,v1,v2):
+        if v1[0] == v2[0] and v1[1] == v2[1] and v1[2] == v2[2]:
+            return False
+        return True
+
+    def check255(self,v):
+        if v >= 255:
+            return 255
+        return v
