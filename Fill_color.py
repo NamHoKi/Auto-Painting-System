@@ -20,10 +20,11 @@ class Fill_color(object):
 
         sg_img , count = self.segmentation(bin_img)
         result = self.segmentation_image_show(origin_img,sg_img, label, count)
-        result = self.natual_coloring(result, 100)
+        result = self.line_effect(sg_img, result, 5, 7)
+        result = self.natual_coloring(result, 80)
+        result = cv2.GaussianBlur(result, (3, 3), 0)
         cv2.imwrite('./multi_img_data/result/result.png', result)
         self.file = './multi_img_data/result/result.png'
-
 
     def binarize(self, img, threshold):
         # 이진화
@@ -273,10 +274,30 @@ class Fill_color(object):
     #
     #
     #     for i in range(len(img)):
-    #         for j in range(len(img[0])):
+    #         for j in range'나,숟기(len(img[0])):
     #             pass
 
-    # def line_effect(self, seg_img):
-    #     for i in range(len(seg_img)):
-    #         for j in range(len(seg_img[0])):
-    #             
+    def line_effect(self, seg_img, color_img, value, n):
+        for i in range(len(seg_img)):
+            for j in range(len(seg_img[0])):
+                for l in range(n):
+                    if i + l > 298:
+                        pass
+                    else:
+                        if seg_img[i][j] == 0 and seg_img[i+l][j] != 0 and seg_img[i+l][j] != 1:
+                            for k in range(3):
+                                if color_img[i+l][j][k] - value < 0:
+                                    color_img[i+l][j][k] = 0
+                                else:
+                                    color_img[i+l][j][k] -= value
+                    if j - l <= 0:
+                        pass
+                    else:
+                        if seg_img[i][j] == 0 and seg_img[i][j-l] != 0 and seg_img[i][j-l] != 1:
+                            for k in range(3):
+                                if color_img[i][j-l][k] - value < 0:
+                                    color_img[i][j-l][k] = 0
+                                else:
+                                    color_img[i][j-l][k] -= value
+                                    
+        return color_img
