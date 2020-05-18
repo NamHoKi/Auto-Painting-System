@@ -46,34 +46,30 @@ class classification():
             elif pre_ans == 1: pre_ans_str = "체리"
             elif pre_ans == 2: pre_ans_str = "토마토"
             elif pre_ans == 3: pre_ans_str = "꽃"
-            elif pre_ans == 4: pre_ans_str = "아보카도"
-            elif pre_ans == 5: pre_ans_str = "나뭇잎"
-            elif pre_ans == 6: pre_ans_str = "당근"
-            elif pre_ans == 7: pre_ans_str = "조개"
+            elif pre_ans == 4: pre_ans_str = "나뭇잎"
+            elif pre_ans == 5: pre_ans_str = "당근"
+            elif pre_ans == 6: pre_ans_str = "조개"
 
             if i[0] >= 0.8:
-                print("해당 " + filenames[cnt].split("\\")[1] + "이미지는 " + pre_ans_str + "으로 추정됩니다.")
+                # print("해당 " + filenames[cnt].split("\\")[1] + "이미지는 " + pre_ans_str + "으로 추정됩니다.")
                 self.label = 'apple'
             elif i[1] >= 0.8:
-                print("해당 " + filenames[cnt].split("\\")[1] + "이미지는 " + pre_ans_str + "으로 추정됩니다.")
+                # print("해당 " + filenames[cnt].split("\\")[1] + "이미지는 " + pre_ans_str + "으로 추정됩니다.")
                 self.label = 'cherry'
             elif i[2] >= 0.8:
-                print("해당 " + filenames[cnt].split("\\")[1] + "이미지는 " + pre_ans_str + "으로 추정됩니다.")
+                # print("해당 " + filenames[cnt].split("\\")[1] + "이미지는 " + pre_ans_str + "으로 추정됩니다.")
                 self.label = 'tomato'
             elif i[3] >= 0.8:
-                print("해당 " + filenames[cnt].split("\\")[1] + "이미지는 " + pre_ans_str + "으로 추정됩니다.")
+                # print("해당 " + filenames[cnt].split("\\")[1] + "이미지는 " + pre_ans_str + "으로 추정됩니다.")
                 self.label = 'flower'
             elif i[4] >= 0.8:
-                print("해당 " + filenames[cnt].split("\\")[1] + "이미지는 " + pre_ans_str + "으로 추정됩니다.")
-                self.label = 'avocado'
-            elif i[5] >= 0.8:
-                print("해당 " + filenames[cnt].split("\\")[1] + "이미지는 " + pre_ans_str + "으로 추정됩니다.")
+                # print("해당 " + filenames[cnt].split("\\")[1] + "이미지는 " + pre_ans_str + "으로 추정됩니다.")
                 self.label = 'leaf'
-            elif i[6] >= 0.8:
-                print("해당 " + filenames[cnt].split("\\")[1] + "이미지는 " + pre_ans_str + "으로 추정됩니다.")
+            elif i[5] >= 0.8:
+                # print("해당 " + filenames[cnt].split("\\")[1] + "이미지는 " + pre_ans_str + "으로 추정됩니다.")
                 self.label = 'carrot'
-            elif i[7] >= 0.8:
-                print("해당 " + filenames[cnt].split("\\")[1] + "이미지는 " + pre_ans_str + "으로 추정됩니다.")
+            elif i[6] >= 0.8:
+                # print("해당 " + filenames[cnt].split("\\")[1] + "이미지는 " + pre_ans_str + "으로 추정됩니다.")
                 self.label = 'shellfish'
             else:
                 print("해당 이미지는 없는 데이터입니다.")
