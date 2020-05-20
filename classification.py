@@ -38,9 +38,7 @@ class classification():
         # sg = Segmentation()
 
         for i in prediction:
-            pre_ans = i.argmax()  # 예측 레이블
-            # print(i)
-            # print(pre_ans)
+            pre_ans = i.argmax()  # 예측레이블
             pre_ans_str = ''
             if pre_ans == 0: pre_ans_str = "사과"
             elif pre_ans == 1: pre_ans_str = "체리"
