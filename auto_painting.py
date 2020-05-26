@@ -19,3 +19,4 @@ class auto_painting:
 
 if __name__ == '__main__':
     w = auto_painting()
+
