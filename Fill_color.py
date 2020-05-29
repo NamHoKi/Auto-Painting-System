@@ -183,17 +183,6 @@ class Fill_color(object):
             return 255
         return v
 
-    # def add_shadow(self, img):
-    #     histogram = [0] * len(img)
-    #     line = len(img)
-    #     for i in range(len(img),1,-1):
-    #         for j in range(len(img[0])):
-    #
-    #
-    #     for i in range(len(img)):
-    #         for j in range'나,숟기(len(img[0])):
-    #             pass
-
     def line_effect(self, seg_img, color_img, value, n):
         for i in range(len(seg_img)):
             for j in range(len(seg_img[0])):
