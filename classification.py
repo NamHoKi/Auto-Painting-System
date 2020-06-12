@@ -4,6 +4,7 @@ from keras.models import load_model
 import cv2
 # from Segmentation import Segmentation
 
+
 class classification():
     def __init__(self):
         self.label = ''
