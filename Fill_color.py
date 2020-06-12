@@ -3,7 +3,6 @@ import copy
 import random
 import math
 
-
 class Fill_color(object):
     def __init__(self, filename, label):
         self.file = ''
@@ -109,24 +108,26 @@ class Fill_color(object):
         elif label == 'tomato':
             # 토마토
             color = [[0,0,180],[0,100,0]]
-            for seg_cnt in range(2):
-                for i in range(len(segmentation_img)):
-                    for j in range(len(segmentation_img[0])):
-                        if segmentation_img[i][j] == color_count[seg_cnt]:
-                            color_img[i][j] = color[seg_cnt]
-        elif label == 'flower':
-            # 꽃
-            center_circle = segmentation_img[150][150]
-            color = [0,255,255]
             for seg_cnt in range(count - 1):
                 for i in range(len(segmentation_img)):
                     for j in range(len(segmentation_img[0])):
                         if segmentation_img[i][j] == color_count[seg_cnt]:
+                            if seg_cnt == 0:
+                                color_img[i][j] = color[0]
+                            else:
+                                color_img[i][j] = color[1]
+        elif label == 'flower':
+            # 꽃
+            center_circle = segmentation_img[150][150]
+            color = [20,220,220]
+            for seg_cnt in range(count - 1):
+                for i in range(len(segmentation_img)):
+                    for j in range(len(segmentation_img[0])):
+                        if segmentation_img[i][j] == center_circle:
+                            color_img[i][j] = [50,50,180]
+                        elif segmentation_img[i][j] == color_count[seg_cnt]:
                             color_img[i][j] = color
-            for i in range(0,300):
-                for j in range(0,300):
-                    if segmentation_img[i][j] == center_circle:
-                        color_img[i][j] = [0,0,160]
+
         elif label == 'leaf':
             # 잎
             color = [20,160,20]
@@ -191,7 +192,6 @@ class Fill_color(object):
         if v >= 255:
             return 255
         return v
-
 
     def line_effect(self, seg_img, color_img, value, n):
         for i in range(len(seg_img)):
