@@ -4,7 +4,6 @@ from keras.models import load_model
 import cv2
 # from Segmentation import Segmentation
 
-
 class classification():
     def __init__(self):
         self.label = ''
@@ -74,5 +73,5 @@ class classification():
                 print("해당 이미지는 없는 데이터입니다.")
                 self.label = 'none'
 
-            cnt += 1
 
+            cnt += 1
