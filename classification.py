@@ -3,7 +3,6 @@ import os, glob, numpy as np
 from keras.models import load_model
 import cv2
 
-
 class classification():
     def __init__(self):
         self.label = ''
