@@ -7,6 +7,7 @@ from PyQt5.QtGui import *
 
 # QApplication.setAttribute(Qt.AA_EnableHighDpiScaling, True)  # 화면크기스케일링
 
+
 class auto_painting:
     def __init__(self):
         self.painting()
