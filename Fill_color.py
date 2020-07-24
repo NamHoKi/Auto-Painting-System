@@ -4,7 +4,6 @@ import random
 import math
 
 
-
 class Fill_color(object):
     def __init__(self, filename, label):
         self.file = ''
